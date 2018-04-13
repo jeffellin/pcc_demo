@@ -50,7 +50,7 @@ Next, we will create a simple client also using Spring Boot which will do most o
 @EnableEntityDefinedRegions(basePackages = {"com.example.demogemfire.model"},
         clientRegionShortcut = ClientRegionShortcut.CACHING_PROXY)
 @EnableGemfireRepositories
-@EnablePdx(readSerialized =false,serializerBeanName="reflectionBasedAutoSerializer")
+@EnablePdx()
 public class DemoGemfireApplication {
 ...
 }
@@ -61,7 +61,7 @@ public class DemoGemfireApplication {
 2. This application requires a client cache
 3. Automatically define client regions based on Repositories found on the classpath
 4. Make Repositories found,  GemFire repositories
-5. Enable PDX Serialization.  PDX Serialization is used to avoid placing model objects on the server. Without PDX when querying for data, the server will not be able to read into the object to determine if the criteria has been met.
+5. Enable PDX Serialization.  
 
 We then can define a typical Spring Data Repository.
 
@@ -73,10 +73,10 @@ interface PersonRepository extends CrudRepository<Person, String> {
     ...
 }    
 ```    
-Lastly, we need to tell Spring where to find the cache locator by adding a property to application.properties.
+Lastly, we need to tell Spring where to find the cache locator by adding a property to application.properties. The correct host and port should be visible in your CacheServer startup log.
 
 ```
-spring.data.gemfire.locator.port=10334
+spring.data.gemfire.pool.locators=localhost[10334]
 ```
 
 When you run the application, you should see output indicating data was placed in the cache and subsequently retrieved from the cache.
@@ -180,8 +180,9 @@ cacheserver-3418fce1-13dd-4104-97ba-083b11b7a936 | Region "/Person" created on "
 ### Service Discovery
 When binding a service to an application container in PCF, we can expose connection information such as URLs and credentials that may change over time.  Spring Cloud for Gemfire can automate the retrieval of these credentials.
 
-<div class="note"></div>       
+<div class="alert alert-success">       
 **NOTE**: While it would be ideal to use Spring Cloud Gemfire to automate the connection we can't currently extend additional configuration parameters such as PDX Serialization.  This is because the connector creates the `ClientCache` before the `@ClientCacheApplication` annotation.  In order to work around this add the `@EnableSecurity` annotation and the following config properties.
+</div>
 
 ```spring.data.gemfire.pool.locators=192.168.12.185[55221]
 spring.data.gemfire.security.username=cluster_operator_****
