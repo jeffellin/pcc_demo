@@ -10,11 +10,14 @@ import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.apache.geode.pdx.PdxSerializer;
 import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.gemfire.cache.GemfireCacheManager;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
@@ -32,7 +35,7 @@ import java.util.Properties;
 		clientRegionShortcut = ClientRegionShortcut.CACHING_PROXY)
 @EnableGemfireRepositories
 @EnablePdx(readSerialized =false,serializerBeanName="reflectionBasedAutoSerializer")
-
+@EnableCaching
 public class DemoGemfireApplication {
 
 
@@ -40,6 +43,13 @@ public class DemoGemfireApplication {
 		SpringApplication.run(DemoGemfireApplication.class, args);
 	}
 
+	@Bean(name="reflectionBasedAutoSerializer")
+	public PdxSerializer reflectionBasedAutoSerializer() {
+		String[] patterns = new String[]{"com.example.demogemfire.model.*"};
+		PdxSerializer reflectionBasedAutoSerializer = new
+				ReflectionBasedAutoSerializer(patterns);
+		return reflectionBasedAutoSerializer;
+	}
 
 
 	@Bean
@@ -82,5 +92,7 @@ public class DemoGemfireApplication {
 					.forEach(person -> System.out.println("\t" + person));
 		};
 	}
+
+
 
 }

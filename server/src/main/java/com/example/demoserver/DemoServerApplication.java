@@ -19,8 +19,6 @@ import org.springframework.data.gemfire.config.annotation.EnablePdx;
 @CacheServerApplication(name = "SpringBootGemFireServer")
 @EnableLocator
 @EnableManager
-@EnablePdx(serializerBeanName="reflectionBasedAutoSerializer", readSerialized = true)
-
 public class DemoServerApplication {
 
 	public static void main(String[] args) {
@@ -28,13 +26,6 @@ public class DemoServerApplication {
 	}
 
 
-	@Bean(name="reflectionBasedAutoSerializer")
-	public PdxSerializer reflectionBasedAutoSerializer() {
-		String[] patterns = new String[]{"com.example.demogemfire.model.*"};
-		PdxSerializer reflectionBasedAutoSerializer = new
-				ReflectionBasedAutoSerializer(patterns);
-		return reflectionBasedAutoSerializer;
-	}
 
 
 	@Bean(name = "Person")
