@@ -148,8 +148,7 @@ PCC is a cloud-based cache that can be deployed to Cloud Foundry.  Assuming your
        }
       }
      }
-    }
-```    
+    }```    
 
 Create a Region in PCC to hold the data. Use the locator URL and GFSH operator credentials from above.
 
@@ -188,13 +187,15 @@ When binding a service to an application container in PCF, we can expose connect
 spring.data.gemfire.security.username=cluster_operator_****
 spring.data.gemfire.security.password=****
 ```
+
 *This is being addressed in a future release of Spring Boot.*
 
 
 Create a PCF manifest to bind the cache to your application
 
-```
----
+
+
+```---
 applications:
 - name: client
   path: target/gs-accessing-data-gemfire-0.1.0.jar
