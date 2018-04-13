@@ -30,14 +30,6 @@
 			<name>Spring Repository</name>
 			<url>https://repo.spring.io/release</url>
 		</repository>
-		<!--why are io.pivotal.gemfire:geode-core, geode-cq
-		    lucene, wan, here 9.11 transitive dependency of 2.05-->
-		<repository>
-			<id>gemfire-release-repo</id>
-			<name>Pivotal GemFire Release Repository</name>
-			<url>https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire</url>
-		</repository>
-
 	</repositories>
 
 	<dependencies>
@@ -46,7 +38,7 @@
 
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-gemfire</artifactId>
+			<artifactId>spring-data-geode</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

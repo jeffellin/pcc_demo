@@ -32,14 +32,13 @@ public class DemoServerApplication {
 	ReplicatedRegionFactoryBean personRegion(Cache gemfireCache
 												 ) {
 
-		ReplicatedRegionFactoryBean customers = new ReplicatedRegionFactoryBean<>();
+		ReplicatedRegionFactoryBean person = new ReplicatedRegionFactoryBean<>();
 
-		//factorials.setAttributes(factorialRegionAttributes);
-		customers.setCache(gemfireCache);
-		customers.setClose(false);
-		customers.setPersistent(false);
+		person.setCache(gemfireCache);
+		person.setClose(false);
+		person.setPersistent(false);
 
-		return customers;
+		return person;
 
 	}
 }

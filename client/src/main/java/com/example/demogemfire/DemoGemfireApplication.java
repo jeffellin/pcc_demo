@@ -1,31 +1,19 @@
 package com.example.demogemfire;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.StreamSupport.stream;
-
-
 import com.example.demogemfire.model.Person;
-import org.apache.geode.cache.client.ClientCache;
-import org.apache.geode.cache.client.ClientCacheFactory;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-import org.apache.geode.pdx.PdxSerializer;
-import org.apache.geode.pdx.ReflectionBasedAutoSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.cache.GemfireCacheManager;
 import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
 import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
 import org.springframework.data.gemfire.config.annotation.EnablePdx;
+import org.springframework.data.gemfire.config.annotation.EnableSecurity;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
-import java.util.Properties;
+import static java.util.Arrays.asList;
+import static java.util.stream.StreamSupport.stream;
 
 
 
@@ -34,21 +22,13 @@ import java.util.Properties;
 @EnableEntityDefinedRegions(basePackages = {"com.example.demogemfire.model"},
 		clientRegionShortcut = ClientRegionShortcut.CACHING_PROXY)
 @EnableGemfireRepositories
-@EnablePdx(readSerialized =false,serializerBeanName="reflectionBasedAutoSerializer")
-@EnableCaching
+@EnablePdx()
+@EnableSecurity
 public class DemoGemfireApplication {
 
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoGemfireApplication.class, args);
-	}
-
-	@Bean(name="reflectionBasedAutoSerializer")
-	public PdxSerializer reflectionBasedAutoSerializer() {
-		String[] patterns = new String[]{"com.example.demogemfire.model.*"};
-		PdxSerializer reflectionBasedAutoSerializer = new
-				ReflectionBasedAutoSerializer(patterns);
-		return reflectionBasedAutoSerializer;
 	}
 
 

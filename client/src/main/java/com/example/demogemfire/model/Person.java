@@ -7,7 +7,7 @@ import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.gemfire.mapping.annotation.Region;
 
 @Region(value = "Person")
-public class Person implements Serializable {
+public class Person {
 
     public Person() {
     }
