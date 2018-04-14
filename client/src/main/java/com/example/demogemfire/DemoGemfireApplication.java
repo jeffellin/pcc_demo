@@ -22,8 +22,8 @@ import static java.util.stream.StreamSupport.stream;
 @EnableEntityDefinedRegions(basePackages = {"com.example.demogemfire.model"},
 		clientRegionShortcut = ClientRegionShortcut.CACHING_PROXY)
 @EnableGemfireRepositories
-@EnablePdx()
-@EnableSecurity
+//@EnablePdx()
+//@EnableSecurity
 public class DemoGemfireApplication {
 
 
