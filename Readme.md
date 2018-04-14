@@ -188,8 +188,32 @@ spring.data.gemfire.security.username=cluster_operator_****
 spring.data.gemfire.security.password=****
 ```
 
-*This is being addressed in a future release of Spring Boot.*
+*This is being addressed in a future release of [Spring Boot Starter for Gemfire/Geode](https://github.com/spring-projects/spring-boot-data-geode). Until then here is a possible work around.*
 
+If you manually create the ClientCache you have more control but you will lose the benefit of using the annotations.  
+
+```
+@Bean
+   ClientCache clientCache() throws IOException, URISyntaxException {
+
+
+       Properties props = new Properties();
+       props.setProperty("security-client-auth-init", "com.example.demogemfire.config.ClientAuthInitialize.create");
+       ClientCacheFactory ccf = new ClientCacheFactory(props);
+       ccf.setPdxSerializer(new MappingPdxSerializer());
+       List<URI> locatorList = EnvParser.getInstance().getLocators();
+
+       for (URI locator : locatorList) {
+           ccf.addPoolLocator(locator.getHost(), locator.getPort());
+       }
+
+       return ccf.create();
+
+   }
+```
+In the above example the EnvParser is responsible for gathering the required data out of VCAP_SERVICES.
+
+[Working Code on this branch](https://github.com/jeffellin/pcc_demo/tree/PCFEnvParsing/client/src/main/java/com/example/demogemfire/config)
 
 Create a PCF manifest to bind the cache to your application
 
