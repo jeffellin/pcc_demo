@@ -1,3 +1,14 @@
+The following article will help the Spring developer complete the following steps.
+
+1. Create a local GemFire Server for testing.
+2. Create a cache client application.
+3. Create a Pivotal Cloud Cache service instance in Pivotal Cloud Foundry (PCF)
+4. Deploy client application to PCF
+
+The complete code is [here](https://github.com/jeffellin/pcc_demo).
+
+
+
 ##  Cache Server for local development
 Use Spring Boot
 
@@ -183,7 +194,8 @@ When binding a service to an application container in PCF, we can expose connect
 **NOTE**: While it would be ideal to use Spring Cloud Gemfire to automate the connection we can't currently extend additional configuration parameters such as PDX Serialization.  This is because the connector creates the `ClientCache` before the `@ClientCacheApplication` annotation.  In order to work around this add the `@EnableSecurity` annotation and the following config properties.
 </div>
 
-```spring.data.gemfire.pool.locators=192.168.12.185[55221]
+```
+spring.data.gemfire.pool.locators=192.168.12.185[55221]
 spring.data.gemfire.security.username=cluster_operator_****
 spring.data.gemfire.security.password=****
 ```
