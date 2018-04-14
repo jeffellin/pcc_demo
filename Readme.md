@@ -117,7 +117,7 @@ PCC is a cloud-based cache that can be deployed to Cloud Foundry.  Assuming your
 
 3. Service Key
 
-    Once the instance creation succeeds, we will need a service key. The service key will provide the required credentials for working with the cache. By default, you will have two users one with `developer` access and one with `operator` access.  This information will also be exposed via `VCAP_SERVICES` to allow applications in other deployed containers to connect.
+       Once the instance creation succeeds, we will need a service key. The service key will provide the required credentials for working with the cache. By default, you will have two users one with `developer` access and one with `operator` access.  This information will also be exposed via `VCAP_SERVICES` to allow applications in other deployed containers to connect.
 
     ```
     cf create-service-key pcc pcc-key
@@ -159,34 +159,37 @@ PCC is a cloud-based cache that can be deployed to Cloud Foundry.  Assuming your
        }
       }
      }
-    }```    
+    }
+    ```
+           
+4. Create the Using GFSH
 
-Create a Region in PCC to hold the data. Use the locator URL and GFSH operator credentials from above.
-
-Load the GFSH utility included with the GemFire distribution.
-
-```
-./gfsh
-
-```
-Connect to the cache
-
-```
-gfsh>connect --use-http --url https://cloudcache-yourserver.io/gemfire/v1 --user=cluster_operator_DnrQ139FKwjTaLpBJsuQ --password=OxKlo8GXHGgWcRNGPx6nw
-Successfully connected to: GemFire Manager HTTP service @ org.apache.geode.management.internal.web.http.support.HttpRequester@a34930a
-
-Cluster-12 gfsh>
-```
-
-Create the region
-
-```
-Cluster-12 gfsh>create region --name=Person --type=REPLICATE
-                     Member                      | Status
------------------------------------------------- | ------------------------------------------------------------------------
-cacheserver-3418fce1-13dd-4104-97ba-083b11b7a936 | Region "/Person" created on "cacheserver-3418fce1-13dd-4104-97ba-083b1..
-```
-
+	Create a Region in PCC to hold the data. Use the locator URL and GFSH operator credentials from above.
+	
+	Load the GFSH utility included with the GemFire distribution.
+	
+	```
+	./gfsh
+	```
+	
+	Connect to the cache
+	
+	```
+	gfsh>connect --use-http --url https://cloudcache-yourserver.io/gemfire/v1 --user=cluster_operator_DnrQ139FKwjTaLpBJsuQ --password=OxKlo8GXHGgWcRNGPx6nw
+	Successfully connected to: GemFire Manager HTTP service @ org.apache.geode.management.internal.web.http.support.HttpRequester@a34930a
+	
+	Cluster-12 gfsh>
+	```
+	
+	Create the region
+	
+	```
+	Cluster-12 gfsh>create region --name=Person --type=REPLICATE
+	                     Member                      | Status
+	------------------------------------------------ | ------------------------------------------------------------------------
+	cacheserver-3418fce1-13dd-4104-97ba-083b11b7a936 | Region "/Person" created on "cacheserver-3418fce1-13dd-4104-97ba-083b1..
+	```
+	
 ### Service Discovery
 When binding a service to an application container in PCF, we can expose connection information such as URLs and credentials that may change over time.  Spring Cloud for Gemfire can automate the retrieval of these credentials.
 
