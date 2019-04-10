@@ -6,10 +6,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.gemfire.config.annotation.ClientCacheApplication;
-import org.springframework.data.gemfire.config.annotation.EnableEntityDefinedRegions;
-import org.springframework.data.gemfire.config.annotation.EnablePdx;
-import org.springframework.data.gemfire.config.annotation.EnableSecurity;
+import org.springframework.data.gemfire.RegionFactoryBean;
+import org.springframework.data.gemfire.client.ClientCacheFactoryBean;
+import org.springframework.data.gemfire.client.ClientRegionFactoryBean;
+import org.springframework.data.gemfire.config.annotation.*;
 import org.springframework.data.gemfire.repository.config.EnableGemfireRepositories;
 
 import static java.util.Arrays.asList;
@@ -18,12 +18,9 @@ import static java.util.stream.StreamSupport.stream;
 
 
 @SpringBootApplication
-@ClientCacheApplication(name = "AccessingDataGemFireApplication", logLevel = "error")
 @EnableEntityDefinedRegions(basePackages = {"com.example.demogemfire.model"},
 		clientRegionShortcut = ClientRegionShortcut.CACHING_PROXY)
 @EnableGemfireRepositories
-@EnablePdx()
-@EnableSecurity
 public class DemoGemfireApplication {
 
 
@@ -31,6 +28,28 @@ public class DemoGemfireApplication {
 		SpringApplication.run(DemoGemfireApplication.class, args);
 	}
 
+	@Bean
+	public RegionConfigurer regionConfigurer(){
+		return new RegionConfigurer() {
+			@Override
+			public void configure(String beanName, ClientRegionFactoryBean<?, ?> bean) {
+				if(beanName.equals("Person")){
+					//bean.setCacheListeners(...);
+				}
+			}
+		};
+	}
+
+	@Bean
+	public ClientCacheConfigurer cacheConfigurer(){
+		return new ClientCacheConfigurer() {
+			@Override
+			public void configure(String s, ClientCacheFactoryBean clientCacheFactoryBean) {
+				//customize the cache
+				clientCacheFactoryBean.setSubscriptionEnabled(false);
+			}
+		};
+	}
 
 	@Bean
 	ApplicationRunner run(PersonRepository personRepository) {
